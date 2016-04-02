@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class Document
 {
-    private List<Sentence> sentences;
+    private List<Sentence> sentences = new ArrayList<Sentence>();
     private int numWords;
     private int numSyllables;
     
@@ -17,6 +18,14 @@ public class Document
      */
     public void append(String sentence)
     {
+        Sentence added = new Sentence(sentence);
+        // check for valid sentence
+        if (added.getNumWords() > 0)
+        {
+            sentences.add(added);
+            numWords += added.getNumWords();
+            numSyllables += added.getTotalSyllables();
+        }
     }
     
     /**
@@ -25,7 +34,7 @@ public class Document
      */
     public List<Sentence> getSentences()
     {
-        return null;
+        return sentences;
     }
     
     /**
@@ -43,7 +52,7 @@ public class Document
      */
     public int getNumWords()
     {
-        return 0;
+        return numWords;
     }
     
     /**
@@ -52,7 +61,7 @@ public class Document
      */
     public int getNumSyllables()
     {
-        return 0;
+        return numSyllables;
     }
     
     /**
@@ -63,7 +72,18 @@ public class Document
     @Override
     public String toString()
     {
-        return "";
+        StringBuffer string = new StringBuffer();
+        // build sentence
+        for (int sentence = 0; sentence < sentences.size(); sentence++)
+        {
+            // check for start of sentence
+            if (sentence != 0)
+            {
+                string.append("\n");
+            }
+            string.append(sentences.get(sentence));
+        }
+        return string.toString();
     }
     
     /**
@@ -74,6 +94,25 @@ public class Document
     @Override
     public boolean equals(Object other)
     {
-        return false;
+        boolean result = false;
+        
+        // check for null
+        if (other != null)
+        {
+            // check instance type
+            if (other instanceof Document)
+            {
+                Document doc = (Document) other;
+                
+                // check equal sentences
+                if (this.sentences.equals(doc.sentences)
+                        && this.numSyllables == doc.numSyllables
+                        && this.numWords == doc.numWords)
+                {
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 }
