@@ -29,15 +29,6 @@ public class Document
     }
     
     /**
-     * Returns all the sentences that have been appended to this document.
-     * @return the list of all sentences appended
-     */
-    public List<Sentence> getSentences()
-    {
-        return sentences;
-    }
-    
-    /**
      * Returns the total number of sentences appended.
      * @return total number of sentences
      */

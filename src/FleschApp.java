@@ -1,7 +1,7 @@
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * The class that contains the main and will run the program.
@@ -26,55 +26,25 @@ public class FleschApp
      */
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
-        Scanner scanner = new Scanner(new File("test3.txt"));
-        scanner.useDelimiter("[.|!|?|:|;]");
+        FleschCompute comp = null;
         
-//        for (int i = 0; scanner.hasNext(); i++)
-//        {
-//            System.out.print(i + ": ");
-//            System.out.println(scanner.next());
-//        }
-//        
-        //String str = "?^()hel<>lo!\n ^wh$at% up 13.42 -@dude- 1738    yo-o!@#$!";
-        //String str = "^^?3490what's!$#@%#@$134 ~<uuuup> -%doo? ha-ha!";
-        String str = "#$can't9* \\\"ain't,\\\" 234ABC 123 23abn45 @#$aba34dfs#$% @a@e@i@o@u@";
-        //System.out.println("result:" + str.replaceAll("(\\w+)\\p{Punct}(\\s|$)", ""));
-        //System.out.println("result:" + str.replaceAll("([a-z]+)[?:!.,;]*", "$1"));
-//        String[] array = str.split("[^a-zA-Z]+");
-        String[] array = str.split("[\\s]+");//\\d+.*
-        //String[] array = str.split("[\\s\\d+(\\.\\d+)]+");
-        String regex = "[^a-zA-z]";
-        System.out.println("array size: " + array.length);
-        for (String string : array)
+        // check for default
+        if (args.length == 0)
         {
-            System.out.println(string + " -- result: " + string.matches(regex));
-            String word2 = string.replaceFirst("^[^a-zA-Z]+", "");
-            String word3 = word2.replaceAll("[^a-zA-Z]+$", "");
-            System.out.println("\tword2: "+ word3 + ", size: " + word3.length());
+            comp = new FleschCompute();
+        }
+        // check if specified an input but not output
+        else if (args.length == 1)
+        {
+            comp = new FleschCompute(new FileInputStream(args[0]), System.out);
+        }
+        // check if specified both an input and output
+        else if (args.length == 2)
+        {
+            comp = new FleschCompute(
+                    new FileInputStream(args[0]), new FileOutputStream(args[1]));
         }
         
-        String newWord = "--hel^lo--".replaceFirst("^[^a-zA-Z]+", "");
-        System.out.println("res: " + newWord);
-        System.out.println("newword: " +newWord.replaceAll("[^a-zA-Z]+$", ""));
-           
-    }
-     
-    
-        
-    
-    public static String removePunctuation(String word){
-         
-        StringBuilder sb = new StringBuilder("");
-         
-        for(int i=0; i<word.length();i++){
-             
-            if(Character.isLetterOrDigit(word.charAt(i))){
-                sb.append(word.charAt(i));
-            }
-        }
-         
-        return sb.toString();
+        comp.compute();
     }
 }
-//^()hel<>lo!
-// ^wh$at% up -@lol-     wh-y
